@@ -121,7 +121,7 @@ def generate_box_plot(data, x=None, y=None, hue=None):
     return(fig)
 
 @st.cache_data
-def generate_scatter_plot(data, x, y, hue):
+def generate_scatter_plot(data, x=None, y=None, hue=None, highlight_point=None, highlight_color='Black'):
     """
     Retourne la figure scatter plot
     """
@@ -130,6 +130,13 @@ def generate_scatter_plot(data, x, y, hue):
                     x=x, 
                     y=y, 
                     hue=hue)
+    if highlight_point is not None:
+        plt.scatter(highlight_point[0], highlight_point[1], 
+                    color=highlight_color, 
+                    marker='x',
+                    s=300,  # Taille de la croix
+                    label='Client',
+                    zorder=5) # Au dessus de tous les points
     plt.close()
     return(fig)
 
@@ -221,9 +228,9 @@ with st.sidebar:
     st.header('Bienvenue 👋')
 
     st.subheader("Id du client:")
-    chosen_id = st.number_input(label="Entrez l'id du client", 
-                                step=1, 
-                                label_visibility="collapsed")
+    chosen_id = st.selectbox(label="Entrez l'id du client",
+                             options=LIST_ID,
+                            label_visibility="collapsed")
     if chosen_id:
         if chosen_id not in LIST_ID:
             st.warning("L'ID choisi n'existe pas.")
@@ -410,5 +417,7 @@ if chosen_id:
             scatter_fig = generate_scatter_plot(data=df_original.sample(nb_sample), 
                                                 x=select_feature_SC[0], 
                                                 y=select_feature_SC[1], 
-                                                hue=chosen_class)
+                                                hue=chosen_class,
+                                                highlight_point=df_original.loc[df_original['SK_ID_CURR'] == chosen_id].iloc[0],
+                                                highlight_color='Black')
             st.pyplot(scatter_fig)
