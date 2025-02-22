@@ -248,7 +248,7 @@ with st.sidebar:
                                         options=MAX_LABEL)
 
     st.subheader("Significations de variables clées")
-    st.write("EXT_SOURCE_i : Score calculé par d'autres structures, détails indisponibles"
+    st.write("EXT_SOURCE_i : Score calculé par d'autres structures, détails indisponibles")
 
 ##############################################################################################
 ############################## HEADER - PREDICTION CLIENT ####################################
